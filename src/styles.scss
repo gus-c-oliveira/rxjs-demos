@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+// GLOBAL RESET
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+// GLOBAL DEFINITIONS
+html {
+  box-sizing: border-box;
+
+  font-size: 62.5%; // 1rem = 10px
+}
+
+body {
+  font-weight: 400;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.6;
+}
