@@ -1,0 +1,47 @@
+@import 'variables';
+
+.app-container {
+  display: grid;
+  grid-template-areas:
+    'header        header'
+    'control      control'
+    'description   code'
+    'output        code';
+  grid-template-rows: min-content min-content 1fr 1fr;
+  grid-template-columns: 1.5fr 2.5fr;
+  height: 100vh;
+  padding: 0 1rem 1rem;
+
+  // For layout debugging
+  color: #fff;
+
+  column-gap: 1rem;
+  row-gap: 1rem;
+
+  background-image: linear-gradient(to right bottom, #e00494, #67048f);
+
+  @media only screen and (max-width: $responsive-breakpoint) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.header {
+  grid-area: header;
+}
+
+.control {
+  grid-area: control;
+}
+
+.description {
+  grid-area: description;
+}
+
+.output {
+  grid-area: output;
+}
+
+.code {
+  grid-area: code;
+}
