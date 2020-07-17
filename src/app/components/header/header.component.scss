@@ -1,0 +1,14 @@
+@import 'colors';
+
+:host {
+  display: block;
+}
+
+h1 {
+  padding: 1rem 0;
+
+  color: $color-white;
+  font-weight: 300;
+  font-size: 5rem;
+  text-align: center;
+}
