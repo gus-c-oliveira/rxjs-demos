@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  align-items: center;
+  margin: 0 auto 2rem;
+  padding: 0.5rem 3rem;
+
+  color: #000;
+  font-weight: 600;
+  font-size: 1.4rem;
+
+  background-color: #f1f1f1;
+  border-radius: 100px;
+  box-shadow: 0 2rem 6rem rgba($color: #000, $alpha: 0.3);
+}
+
+mat-form-field,
+.mat-select,
+.mat-option {
+  font-family: inherit;
+}
+
+mat-form-field {
+  width: 350px;
+  margin-left: 1rem;
+}

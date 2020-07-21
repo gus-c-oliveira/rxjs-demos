@@ -1,0 +1,8 @@
+<span class="label">Select Demo:</span>
+<mat-form-field>
+  <mat-select [formControl]="formControl" (selectionChange)="emitSelected()">
+    <mat-option *ngFor="let option of options" [value]="option.id">
+      {{ option.title }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
