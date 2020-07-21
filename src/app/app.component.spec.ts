@@ -1,7 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserModule, By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
+import {
+  ControlComponent,
+  selector as controlSelector,
+} from './components/control/control.component';
 import {
   HeaderComponent,
   selector as headerSelector,
@@ -13,7 +20,14 @@ describe('AppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, HeaderComponent],
+      declarations: [AppComponent, ControlComponent, HeaderComponent],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserModule,
+        MatSelectModule,
+        BrowserAnimationsModule,
+      ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);
     app = fixture.componentInstance;
@@ -27,5 +41,10 @@ describe('AppComponent', () => {
   it('should display the header component', () => {
     const header = fixture.debugElement.query(By.css(headerSelector));
     expect(header).toBeTruthy();
+  });
+
+  it('should display the control component', () => {
+    const control = fixture.debugElement.query(By.css(controlSelector));
+    expect(control).toBeTruthy();
   });
 });
