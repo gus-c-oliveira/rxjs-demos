@@ -1,6 +1,9 @@
 <div class="app-container">
   <app-header [title]="appTitle"></app-header>
-  <div class="control">CONTROL</div>
+  <app-control
+    [options]="demos"
+    (selected)="updateSelection($event)"
+  ></app-control>
   <div class="description">DESCRIPTION</div>
   <div class="code">CODE</div>
   <div class="output">OUTPUT</div>
