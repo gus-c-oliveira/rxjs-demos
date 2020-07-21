@@ -13,6 +13,10 @@ import {
   HeaderComponent,
   selector as headerSelector,
 } from './components/header/header.component';
+import {
+  InfoCardComponent,
+  selector as infoCardSelector,
+} from './components/cards/info-card/info-card.component';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -20,7 +24,12 @@ describe('AppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, ControlComponent, HeaderComponent],
+      declarations: [
+        AppComponent,
+        ControlComponent,
+        HeaderComponent,
+        InfoCardComponent,
+      ],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -46,5 +55,19 @@ describe('AppComponent', () => {
   it('should display the control component', () => {
     const control = fixture.debugElement.query(By.css(controlSelector));
     expect(control).toBeTruthy();
+  });
+
+  it('should display the description info card', () => {
+    const card = fixture.debugElement.query(
+      By.css(infoCardSelector + '.description')
+    ).nativeElement;
+    expect(card).toBeTruthy();
+  });
+
+  it('should display the output info card', () => {
+    const card = fixture.debugElement.query(
+      By.css(infoCardSelector + '.output')
+    ).nativeElement;
+    expect(card).toBeTruthy();
   });
 });

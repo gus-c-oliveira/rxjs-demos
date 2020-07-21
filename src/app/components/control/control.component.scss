@@ -1,16 +1,18 @@
+@import 'colors';
+
 :host {
   display: flex;
   align-items: center;
   margin: 0 auto 2rem;
   padding: 0.5rem 3rem;
 
-  color: #000;
+  color: $color-black;
   font-weight: 600;
   font-size: 1.4rem;
 
-  background-color: #f1f1f1;
+  background-color: $base-background;
   border-radius: 100px;
-  box-shadow: 0 2rem 6rem rgba($color: #000, $alpha: 0.3);
+  box-shadow: 0 2rem 6rem rgba($color: $color-black, $alpha: 0.3);
 }
 
 mat-form-field,
