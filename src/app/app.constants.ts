@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { fromEvent, Observable } from 'rxjs';
 
 export const AppConstants = {
   AppTitle: 'RxJS Demos',
@@ -21,6 +21,27 @@ export const AppConstants = {
         const subscription = observable.subscribe((value) =>
           results.push(value)
         );
+        return { results, subscription };
+      },
+    },
+    {
+      title: 'Create from DOM Event',
+      description:
+        'Observables can be created automatically from DOM events. In this demo, an Observable is created from mouse clicks. The click coordinates are displayed in the output.',
+      code: [
+        "const observable = fromEvent(document, 'click');",
+        'observable.subscribe((event) => {',
+        '\xa0\xa0\xa0\xa0log(`{ x: ${(event as MouseEvent).x}, y: ${(event as MouseEvent).y} }`);',
+        '});',
+      ],
+      run: () => {
+        const observable = fromEvent(document, 'click');
+        const results = [];
+        const subscription = observable.subscribe((event) => {
+          results.push(
+            `{ x: ${(event as MouseEvent).x}, y: ${(event as MouseEvent).y} }`
+          );
+        });
         return { results, subscription };
       },
     },
