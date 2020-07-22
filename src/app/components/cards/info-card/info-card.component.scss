@@ -1,17 +1,18 @@
 @import 'colors';
+@import 'variables';
 
 :host {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: $card-padding;
   overflow-y: auto;
 
   color: $color-black;
 
   background-color: $base-background;
 
-  border-radius: 2rem;
-  box-shadow: 0 2rem 6rem rgba($color: $color-black, $alpha: 0.3);
+  border-radius: $card-border-radius;
+  box-shadow: $component-shadow;
 }
 
 h2 {

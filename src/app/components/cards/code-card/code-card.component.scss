@@ -1,17 +1,18 @@
 @import 'colors';
+@import 'variables';
 
 $code-line-border: 1px solid $color-white;
 
 :host {
-  padding: 2rem;
+  padding: $card-padding;
 
   color: $color-white;
   font-size: 1.6rem;
 
   background-color: $color-black;
 
-  border-radius: 2rem;
-  box-shadow: 0 2rem 6rem rgba($color: $color-black, $alpha: 0.3);
+  border-radius: $card-border-radius;
+  box-shadow: $component-shadow;
 }
 
 div {

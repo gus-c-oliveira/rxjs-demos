@@ -1,4 +1,5 @@
 @import 'colors';
+@import 'variables';
 
 :host {
   display: flex;
@@ -12,7 +13,7 @@
 
   background-color: $base-background;
   border-radius: 100px;
-  box-shadow: 0 2rem 6rem rgba($color: $color-black, $alpha: 0.3);
+  box-shadow: $component-shadow;
 }
 
 mat-form-field,
