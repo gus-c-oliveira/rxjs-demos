@@ -1,5 +1,8 @@
 <div>
-  <span *ngFor="let line of code; let index = index" class="code-line">
-    {{ index + 1 }}&#09;{{ line }}
-  </span>
+  <ng-container *ngFor="let line of code; let index = index">
+    <span class="number">{{ index + 1 }}</span>
+    <span class="code-line">
+      {{ line }}
+    </span>
+  </ng-container>
 </div>

@@ -15,8 +15,16 @@ $code-line-border: 1px solid $color-white;
 }
 
 div {
+  display: grid;
+  grid-template-columns: min-content auto;
   height: 100%;
   overflow-y: auto;
+
+  column-gap: 2rem;
+}
+
+.number {
+  text-align: center;
 }
 
 .code-line {
