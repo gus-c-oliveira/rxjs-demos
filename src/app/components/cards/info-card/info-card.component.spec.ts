@@ -1,11 +1,11 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import {
   InfoCardComponent,
   selector as infoCardSelector,
 } from './info-card.component';
-import { By } from '@angular/platform-browser';
-import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-test-host',
