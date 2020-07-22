@@ -17,6 +17,7 @@ $code-line-border: 1px solid $color-white;
 
 div {
   display: grid;
+  grid-auto-rows: min-content;
   grid-template-columns: min-content auto;
   height: 100%;
   overflow-y: auto;
