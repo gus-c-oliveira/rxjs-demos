@@ -35,11 +35,16 @@ describe('CodeCardComponent', () => {
   });
 
   it('should display the lines of code provided as input', () => {
+    const numbers = fixture.debugElement
+      .queryAll(By.css('number'))
+      .map((el) => el.nativeElement.textContent.trim());
     const lines = fixture.debugElement
       .queryAll(By.css('.code-line'))
       .map((line) => line.nativeElement.textContent.trim());
     lines.forEach((line, index) =>
-      expect(line).toEqual(index + 1 + '\t' + host.code[index])
+      expect(numbers[index] + ' ' + line).toEqual(
+        numbers[index] + ' ' + host.code[index]
+      )
     );
   });
 });
