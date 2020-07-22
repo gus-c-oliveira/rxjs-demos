@@ -12,6 +12,7 @@ export class AppComponent {
     { id: 0, title: 'Demo 1' },
     { id: 1, title: 'Demo 2' },
   ];
+  public code = Array(25).fill('code');
   private selectedDemo = null;
 
   public updateSelection(selected) {
