@@ -1,2 +1,11 @@
+@import 'colors';
+
 // RESPONSIVE BREAKPOINT
 $responsive-breakpoint: 50em; // 800px / 16px
+
+// CARD COMPONENTS
+$card-padding: 2rem;
+$card-border-radius: 2rem;
+
+// COMPONENT SHADOW
+$component-shadow: 0 2rem 6rem rgba($color: $color-black, $alpha: 0.3);

@@ -1,0 +1,39 @@
+@import 'colors';
+@import 'variables';
+
+$code-line-border: 1px solid $color-white;
+
+:host {
+  padding: $card-padding;
+
+  color: $color-white;
+  font-size: 1.6rem;
+
+  background-color: $color-black;
+
+  border-radius: $card-border-radius;
+  box-shadow: $component-shadow;
+}
+
+div {
+  display: grid;
+  grid-template-columns: min-content auto;
+  height: 100%;
+  overflow-y: auto;
+
+  column-gap: 2rem;
+}
+
+.number {
+  text-align: center;
+}
+
+.code-line {
+  display: block;
+
+  border-top: $code-line-border;
+
+  &:last-of-type {
+    border-bottom: $code-line-border;
+  }
+}

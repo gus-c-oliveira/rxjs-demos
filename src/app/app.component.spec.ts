@@ -17,6 +17,10 @@ import {
   InfoCardComponent,
   selector as infoCardSelector,
 } from './components/cards/info-card/info-card.component';
+import {
+  CodeCardComponent,
+  selector as codeCardSelector,
+} from './components/cards/code-card/code-card.component';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -26,6 +30,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
+        CodeCardComponent,
         ControlComponent,
         HeaderComponent,
         InfoCardComponent,
@@ -68,6 +73,12 @@ describe('AppComponent', () => {
     const card = fixture.debugElement.query(
       By.css(infoCardSelector + '.output')
     ).nativeElement;
+    expect(card).toBeTruthy();
+  });
+
+  it('should display the code card', () => {
+    const card = fixture.debugElement.query(By.css(codeCardSelector))
+      .nativeElement;
     expect(card).toBeTruthy();
   });
 });
