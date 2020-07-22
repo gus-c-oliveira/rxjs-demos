@@ -23,7 +23,6 @@ describe('HeaderComponent', () => {
   });
 
   it('should display the title', () => {
-    console.log(component);
     const title = fixture.debugElement
       .query(By.css('h1'))
       .nativeElement.textContent.trim();
