@@ -1,4 +1,4 @@
-import { fromEvent, Observable, from, timer } from 'rxjs';
+import { fromEvent, Observable, from, timer, interval } from 'rxjs';
 
 export const AppConstants = {
   AppTitle: 'RxJS Demos',
@@ -84,6 +84,23 @@ export const AppConstants = {
         const results = [];
         const subscription = observable.subscribe((_) =>
           results.push('Timer completed after 5 seconds!')
+        );
+        return { results, subscription };
+      },
+    },
+    {
+      title: 'Creating Values Every Interval',
+      description:
+        'interval(x) can be used to create an Observable that emits every x milliseconds.',
+      code: [
+        'const observable = interval(1000);',
+        'observable.subscribe(value => log(`Value emitted: ${value}`));',
+      ],
+      run: () => {
+        const observable = interval(1000);
+        const results = [];
+        const subscription = observable.subscribe((value) =>
+          results.push(`Value emitted: ${value}`)
         );
         return { results, subscription };
       },
