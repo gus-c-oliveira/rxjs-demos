@@ -126,5 +126,30 @@ export const AppConstants = {
         return { results, subscription };
       },
     },
+    {
+      title: 'Unsubscribing',
+      description:
+        "An Observable emits a complete notification when it's done emitting values. Some Observables complete automatically, others don't. Continuous streams, like interval, might cause memory leaks if they are allowed to run forever. To complete the emission, store the subscription in a variable and call .unsubscribe().",
+      code: [
+        'const observable = interval(1000);',
+        'const subscription = observable.subscribe(value => log(value + 1));',
+        'setTimeout(() => {',
+        '\xa0subscription.unsubscribe();',
+        "\xa0log('Unsubscribed!');",
+        '}, 4000);',
+      ],
+      run: () => {
+        const observable = interval(1000);
+        const results = [];
+        const subscription = observable.subscribe((value) =>
+          results.push(value + 1)
+        );
+        setTimeout(() => {
+          subscription.unsubscribe();
+          results.push('Unsubscribed!');
+        }, 4000);
+        return { subscription, results };
+      },
+    },
   ],
 };
