@@ -1,4 +1,4 @@
-import { fromEvent, Observable } from 'rxjs';
+import { fromEvent, Observable, from } from 'rxjs';
 
 export const AppConstants = {
   AppTitle: 'RxJS Demos',
@@ -42,6 +42,32 @@ export const AppConstants = {
             `{ x: ${(event as MouseEvent).x}, y: ${(event as MouseEvent).y} }`
           );
         });
+        return { results, subscription };
+      },
+    },
+    {
+      title: 'Create from Promise',
+      description: 'A Promise can be converted to an Observable using .from()',
+      code: [
+        'const promise = new Promise(resolve => {',
+        '\xa0\xa0\xa0\xa0setTimeout(() => {',
+        "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0resolve('Promise resolved after 3 seconds!');",
+        '\xa0\xa0\xa0\xa0}, 3000);',
+        '});',
+        'const observable = from(promise);',
+        'observable.subscribe(value => log(value));',
+      ],
+      run: () => {
+        const promise = new Promise((resolve) => {
+          setTimeout(() => {
+            resolve('Promise resolved after 3 seconds!');
+          }, 3000);
+        });
+        const observable = from(promise);
+        const results = [];
+        const subscription = observable.subscribe((value) =>
+          results.push(value)
+        );
         return { results, subscription };
       },
     },
