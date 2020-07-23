@@ -1,4 +1,4 @@
-import { fromEvent, Observable, from, timer, interval } from 'rxjs';
+import { fromEvent, Observable, from, timer, interval, of } from 'rxjs';
 
 export const AppConstants = {
   AppTitle: 'RxJS Demos',
@@ -101,6 +101,27 @@ export const AppConstants = {
         const results = [];
         const subscription = observable.subscribe((value) =>
           results.push(`Value emitted: ${value}`)
+        );
+        return { results, subscription };
+      },
+    },
+    {
+      title: 'Creating From Static Values',
+      description:
+        "An Observable can be created from static values using of(). Values don't necessarily need to have the same type. The Observable completes after emitting its values.",
+      code: [
+        "const observable = of(true, [0, 1, 2], { fruit: 'watermelon', colors: ['red', 'green'], toString: () => 'Hi, I'm an Object emitted by an Observable!' });",
+        'observable.subscribe(value => log(value));',
+      ],
+      run: () => {
+        const observable = of(true, [0, 1, 2], {
+          fruit: 'watermelon',
+          colors: ['red', 'green'],
+          toString: () => "Hi, I'm an Object emitted by an Observable!",
+        });
+        const results = [];
+        const subscription = observable.subscribe((value) =>
+          results.push(value)
         );
         return { results, subscription };
       },
