@@ -15,14 +15,14 @@
   box-shadow: $component-shadow;
 }
 
-h2 {
-  margin-bottom: 1.5rem;
+.title {
+  margin-bottom: $card-header-margin-bottom;
 
-  font-size: 2.6rem;
+  font-size: $card-header-font-size;
 }
 
 div {
   overflow-y: auto;
 
-  font-size: 1.6rem;
+  font-size: $card-content-font-size;
 }
