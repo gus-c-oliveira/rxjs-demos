@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { AppConstants } from './app.constants';
@@ -8,7 +8,7 @@ import { AppConstants } from './app.constants';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   public readonly appTitle = AppConstants.AppTitle;
   public listOfDemos: { id: number; title: string }[] = [];
   public description = '';
@@ -24,15 +24,23 @@ export class AppComponent {
   }
 
   public updateSelection(selected) {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
-    }
+    this.disposeSubscription();
     this.selectedDemo = selected;
     this.description = AppConstants.Demos[this.selectedDemo].description;
     this.code = AppConstants.Demos[this.selectedDemo].code;
     const runArtifacts = AppConstants.Demos[this.selectedDemo].run();
     this.subscription = runArtifacts.subscription;
     this.demoOutput = runArtifacts.results;
+  }
+
+  private disposeSubscription() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+  }
+
+  public ngOnDestroy() {
+    this.disposeSubscription();
   }
 }
