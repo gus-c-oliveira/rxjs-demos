@@ -1,4 +1,4 @@
-import { fromEvent, Observable, from } from 'rxjs';
+import { fromEvent, Observable, from, timer } from 'rxjs';
 
 export const AppConstants = {
   AppTitle: 'RxJS Demos',
@@ -47,7 +47,7 @@ export const AppConstants = {
     },
     {
       title: 'Create from Promise',
-      description: 'A Promise can be converted to an Observable using .from()',
+      description: 'A Promise can be converted to an Observable using from()',
       code: [
         'const promise = new Promise(resolve => {',
         '\xa0\xa0\xa0\xa0setTimeout(() => {',
@@ -67,6 +67,23 @@ export const AppConstants = {
         const results = [];
         const subscription = observable.subscribe((value) =>
           results.push(value)
+        );
+        return { results, subscription };
+      },
+    },
+    {
+      title: 'Creating Timers using Observables',
+      description:
+        'Using timer() creates an Observable that completes when the timer runs out.',
+      code: [
+        'const observable = timer(5000);',
+        "observable.subscribe(_ => log('Timer completed after 5 seconds!'));",
+      ],
+      run: () => {
+        const observable = timer(5000);
+        const results = [];
+        const subscription = observable.subscribe((_) =>
+          results.push('Timer completed after 5 seconds!')
         );
         return { results, subscription };
       },
