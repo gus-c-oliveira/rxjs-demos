@@ -154,9 +154,10 @@ export const AppConstants = {
     {
       title: 'Observables - Cold Observables',
       description:
-        'Cold Observables start generating values once subscription starts. In this demo, since subscriptions start at different times, the subscribers receive different values.',
+        'Cold Observables start generating values once subscription starts and always provide the full sequence of values. In this demo, since subscriptions start at different times, the subscribers receive different values.',
       code: [
         'const observable = new Observable(observer => {',
+        '\xa0\xa0\xa0\xa0observer.next(Math.random());',
         '\xa0\xa0\xa0\xa0observer.next(Math.random());',
         '});',
         'observable.subscribe(value => log(`First Subscriber Value: ${value}`));',
@@ -164,6 +165,7 @@ export const AppConstants = {
       ],
       run: () => {
         const observable = new Observable((observer) => {
+          observer.next(Math.random());
           observer.next(Math.random());
         });
         const results = [];
@@ -179,6 +181,58 @@ export const AppConstants = {
           )
         );
         return { results, subscription };
+      },
+    },
+    {
+      title: 'Observables - Hot Observables',
+      description:
+        'Hot Observables get their values from external sources. When subscribing, the subscriber gets the most recent value and all future values.',
+      code: [
+        'let x = 1;',
+        'const observable = new Observable((observer) => {',
+        '\xa0\xa0\xa0\xa0observer.next(x);',
+        '\xa0\xa0\xa0\xa0setTimeout(() => {',
+        '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0x = x + 1;',
+        '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0observer.next(x);',
+        '\xa0\xa0\xa0\xa0}, 2000);',
+        '\xa0\xa0\xa0\xa0setTimeout(() => {',
+        '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0x = x + 1;',
+        '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0observer.next(x);',
+        '\xa0\xa0\xa0\xa0}, 3000);',
+        '});',
+        'observable.subscribe(value => log(`First Subscriber received: ${value}`));',
+        'setTimeout(() => {',
+        '\xa0\xa0\xa0\xa0observable.subscribe(value => log(`Second Subscriber received: ${value}`));',
+        '}, 2500);',
+      ],
+      run: () => {
+        let x = 1;
+        const observable = new Observable((observer) => {
+          observer.next(x);
+          setTimeout(() => {
+            x = x + 1;
+            observer.next(x);
+          }, 2000);
+          setTimeout(() => {
+            x = x + 1;
+            observer.next(x);
+          }, 3000);
+        });
+        const subscription = [];
+        const results = [];
+        subscription.push(
+          observable.subscribe((value) =>
+            results.push(`First Subscriber received: ${value}`)
+          )
+        );
+        setTimeout(() => {
+          subscription.push(
+            observable.subscribe((value) =>
+              results.push(`Second Subscriber received: ${value}`)
+            )
+          );
+        }, 2500);
+        return { subscription, results };
       },
     },
   ],
