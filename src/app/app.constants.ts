@@ -134,8 +134,8 @@ export const AppConstants = {
         'const observable = interval(1000);',
         'const subscription = observable.subscribe(value => log(value + 1));',
         'setTimeout(() => {',
-        '\xa0subscription.unsubscribe();',
-        "\xa0log('Unsubscribed!');",
+        '\xa0\xa0\xa0\xa0subscription.unsubscribe();',
+        "\xa0\xa0\xa0\xa0log('Unsubscribed!');",
         '}, 4000);',
       ],
       run: () => {
@@ -149,6 +149,36 @@ export const AppConstants = {
           results.push('Unsubscribed!');
         }, 4000);
         return { subscription, results };
+      },
+    },
+    {
+      title: 'Observables - Cold Observables',
+      description:
+        'Cold Observables start generating values once subscription starts. In this demo, since subscriptions start at different times, the subscribers receive different values.',
+      code: [
+        'const observable = new Observable(observer => {',
+        '\xa0\xa0\xa0\xa0observer.next(Math.random());',
+        '});',
+        'observable.subscribe(value => log(`First Subscriber Value: ${value}`));',
+        'observable.subscribe(value => log(`Second Subscriber Value: ${value}`));',
+      ],
+      run: () => {
+        const observable = new Observable((observer) => {
+          observer.next(Math.random());
+        });
+        const results = [];
+        const subscription = [];
+        subscription.push(
+          observable.subscribe((value) =>
+            results.push(`First Subscriber Value: ${value}`)
+          )
+        );
+        subscription.push(
+          observable.subscribe((value) =>
+            results.push(`Second Subscriber Value: ${value}`)
+          )
+        );
+        return { results, subscription };
       },
     },
   ],
