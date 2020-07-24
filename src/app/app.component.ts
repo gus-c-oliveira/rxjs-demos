@@ -15,7 +15,7 @@ export class AppComponent implements OnDestroy {
   public code: string[] = [];
   public demoOutput: any[] = [];
   public selectedDemo: number = null;
-  private subscription: Subscription = null;
+  private subscription: Subscription | Subscription[] = null;
 
   public constructor() {
     AppConstants.Demos.forEach((demo, index) => {
@@ -34,10 +34,18 @@ export class AppComponent implements OnDestroy {
   }
 
   private disposeSubscription() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
+    if (!this.subscription) {
+      return;
     }
+    if (Array.isArray(this.subscription)) {
+      this.subscription.forEach((subs) => {
+        subs.unsubscribe();
+        subs = null;
+      });
+      return;
+    }
+    this.subscription.unsubscribe();
+    this.subscription = null;
   }
 
   public ngOnDestroy() {
