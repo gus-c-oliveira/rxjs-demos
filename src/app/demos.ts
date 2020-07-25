@@ -1,13 +1,13 @@
 import {
-  fromEvent,
-  Observable,
   from,
-  timer,
+  fromEvent,
   interval,
+  Observable,
   of,
   Subscription,
+  timer,
 } from 'rxjs';
-import { map, tap, filter, first, last } from 'rxjs/operators';
+import { debounceTime, filter, first, last, map, tap } from 'rxjs/operators';
 
 export interface Demo {
   title: string;
@@ -426,6 +426,32 @@ export const Demos: Demo[] = [
           .subscribe((value) => results.push(`Last Even Number: ${value}`))
       );
       return { results, subscription };
+    },
+  },
+  {
+    title: 'Operators - debounceTime',
+    description:
+      'Useful to handle streams that emit at a fast rate, such as an user typing into an input. It discards values that take less than the specified time between outputs, and emits the last value. In other words, it emits the last value that has persisted for, at least, the specified amount of time.',
+    code: [
+      "const observable = fromEvent(document, 'mousemove');",
+      'observable.pipe(',
+      getIdentation(1) + 'debounceTime(1000),',
+      ').subscribe(value =>',
+      getIdentation(1) +
+        'log(`x: ${(value as MouseEvent).x}, y: ${(value as MouseEvent).y}`)',
+      ');',
+    ],
+    run: () => {
+      const observable = fromEvent(document, 'mousemove');
+      const results = [];
+      const subscription = observable
+        .pipe(debounceTime(1000))
+        .subscribe((value) => {
+          results.push(
+            `x: ${(value as MouseEvent).x}, y: ${(value as MouseEvent).y}`
+          );
+        });
+      return { subscription, results };
     },
   },
 ];
