@@ -7,7 +7,15 @@ import {
   Subscription,
   timer,
 } from 'rxjs';
-import { debounceTime, filter, first, last, map, tap } from 'rxjs/operators';
+import {
+  debounceTime,
+  filter,
+  first,
+  last,
+  map,
+  tap,
+  throttleTime,
+} from 'rxjs/operators';
 
 export interface Demo {
   title: string;
@@ -446,6 +454,32 @@ export const Demos: Demo[] = [
       const results = [];
       const subscription = observable
         .pipe(debounceTime(1000))
+        .subscribe((value) => {
+          results.push(
+            `x: ${(value as MouseEvent).x}, y: ${(value as MouseEvent).y}`
+          );
+        });
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - ThrottleTime',
+    description:
+      'Similar to debounceTime, for handling fast streams. It emits the first value and then ignores the next values for a specified amount of time.',
+    code: [
+      "const observable = fromEvent(document, 'mousemove');",
+      'observable.pipe(',
+      getIdentation(1) + 'throttleTime(1000),',
+      ').subscribe(value =>',
+      getIdentation(1) +
+        'log(`x: ${(value as MouseEvent).x}, y: ${(value as MouseEvent).y}`)',
+      ');',
+    ],
+    run: () => {
+      const observable = fromEvent(document, 'mousemove');
+      const results = [];
+      const subscription = observable
+        .pipe(throttleTime(1000))
         .subscribe((value) => {
           results.push(
             `x: ${(value as MouseEvent).x}, y: ${(value as MouseEvent).y}`
