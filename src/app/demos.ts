@@ -376,4 +376,48 @@ export const Demos: Demo[] = [
       return { results, subscription };
     },
   },
+  {
+    title: 'Operators - Last',
+    description:
+      'Counterpart to first. Used to select only the last value emitted, or the last value to pass predicate.',
+    code: [
+      'const observable = new Observable(observer => {',
+      '\xa0\xa0\xa0\xa0observer.next(1);',
+      '\xa0\xa0\xa0\xa0observer.next(2);',
+      '\xa0\xa0\xa0\xa0observer.next(3);',
+      '\xa0\xa0\xa0\xa0observer.next(4);',
+      '\xa0\xa0\xa0\xa0observer.next(5);',
+      '\xa0\xa0\xa0\xa0observer.complete();',
+      '});',
+      'observable.pipe(',
+      '\xa0\xa0\xa0\xa0last()',
+      ').subscribe(value => log(`Last Number: ${value}`));',
+      'observable.pipe(',
+      '\xa0\xa0\xa0\xa0last(value => (value as number) % 2 === 0)',
+      ').subscribe(value => log(`Last Even Number: ${value}`));',
+    ],
+    run: () => {
+      const observable = new Observable((observer) => {
+        observer.next(1);
+        observer.next(2);
+        observer.next(3);
+        observer.next(4);
+        observer.next(5);
+        observer.complete();
+      });
+      const results = [];
+      const subscription = [];
+      subscription.push(
+        observable
+          .pipe(last())
+          .subscribe((value) => results.push(`Last number: ${value}`))
+      );
+      subscription.push(
+        observable
+          .pipe(last((value) => (value as number) % 2 === 0))
+          .subscribe((value) => results.push(`Last Even Number: ${value}`))
+      );
+      return { results, subscription };
+    },
+  },
 ];
