@@ -7,13 +7,13 @@ import {
   of,
   Subscription,
 } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, filter } from 'rxjs/operators';
 
 export interface Demo {
   title: string;
   description: string;
   code: string[];
-  run: () => { results: string[]; subscription: Subscription | Subscription[] };
+  run: () => { results: any[]; subscription: Subscription | Subscription[] };
 }
 
 export const Demos: Demo[] = [
@@ -300,6 +300,37 @@ export const Demos: Demo[] = [
           )
         )
         .subscribe();
+      return { results, subscription };
+    },
+  },
+  {
+    title: 'Operators - Filter',
+    description:
+      'The Filter operator receives a function and uses it to filter the data, emitting only the values that satisfy the specified condition.',
+    code: [
+      'const observable = new Observable(observer => {',
+      '\xa0\xa0\xa0\xa0observer.next(1);',
+      '\xa0\xa0\xa0\xa0observer.next(2);',
+      '\xa0\xa0\xa0\xa0observer.next(3);',
+      '\xa0\xa0\xa0\xa0observer.next(4);',
+      '\xa0\xa0\xa0\xa0observer.next(5);',
+      '});',
+      'observable.pipe(',
+      '\xa0\xa0\xa0\xa0filter(value => (value as number) % 2 !== 0)',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = new Observable((observer) => {
+        observer.next(1);
+        observer.next(2);
+        observer.next(3);
+        observer.next(4);
+        observer.next(5);
+      });
+      const results = [];
+      const subscription = observable
+        .pipe(filter((value) => (value as number) % 2 !== 0))
+        .subscribe((value) => results.push(value));
       return { results, subscription };
     },
   },
