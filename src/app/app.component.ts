@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { AppConstants } from './app.constants';
+import { Demos } from './demos';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,7 @@ export class AppComponent implements OnDestroy {
   private subscription: Subscription | Subscription[] = null;
 
   public constructor() {
-    AppConstants.Demos.forEach((demo, index) => {
+    Demos.forEach((demo, index) => {
       this.listOfDemos.push({ id: index, title: demo.title });
     });
   }
@@ -26,9 +27,9 @@ export class AppComponent implements OnDestroy {
   public updateSelection(selected) {
     this.disposeSubscription();
     this.selectedDemo = selected;
-    this.description = AppConstants.Demos[this.selectedDemo].description;
-    this.code = AppConstants.Demos[this.selectedDemo].code;
-    const runArtifacts = AppConstants.Demos[this.selectedDemo].run();
+    this.description = Demos[this.selectedDemo].description;
+    this.code = Demos[this.selectedDemo].code;
+    const runArtifacts = Demos[this.selectedDemo].run();
     this.subscription = runArtifacts.subscription;
     this.demoOutput = runArtifacts.results;
   }
