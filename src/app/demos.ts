@@ -16,10 +16,8 @@ export interface Demo {
   run: () => { results: any[]; subscription: Subscription | Subscription[] };
 }
 
-const ident = '\xa0\xa0\xa0\xa0';
-
 const getIdentation = (level: number): string => {
-  return Array(level).fill(ident).join('');
+  return Array(level).fill('\xa0\xa0\xa0\xa0').join('');
 };
 
 export const Demos: Demo[] = [
