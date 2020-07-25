@@ -18,7 +18,7 @@ export interface Demo {
 
 const ident = '\xa0\xa0\xa0\xa0';
 
-const getIdent = (level: number): string => {
+const getIdentation = (level: number): string => {
   return Array(level).fill(ident).join('');
 };
 
@@ -29,7 +29,7 @@ export const Demos: Demo[] = [
       'An Observable represents a source of data that emits values over time. When creating one manually, you can subscribe to it and use the .next() function to emit values.',
     code: [
       'const observable = new Observable(observer => {',
-      getIdent(1) + "observer.next('Hello Observable!');",
+      getIdentation(1) + "observer.next('Hello Observable!');",
       '});',
       'observable.subscribe(value => log(value));',
     ],
@@ -49,7 +49,7 @@ export const Demos: Demo[] = [
     code: [
       "const observable = fromEvent(document, 'click');",
       'observable.subscribe((event) => {',
-      getIdent(1) +
+      getIdentation(1) +
         'log(`{ x: ${(event as MouseEvent).x}, y: ${(event as MouseEvent).y} }`);',
       '});',
     ],
@@ -69,9 +69,9 @@ export const Demos: Demo[] = [
     description: 'A Promise can be converted to an Observable using from()',
     code: [
       'const promise = new Promise(resolve => {',
-      getIdent(1) + 'setTimeout(() => {',
-      getIdent(2) + "resolve('Promise resolved after 3 seconds!');",
-      getIdent(1) + '}, 3000);',
+      getIdentation(1) + 'setTimeout(() => {',
+      getIdentation(2) + "resolve('Promise resolved after 3 seconds!');",
+      getIdentation(1) + '}, 3000);',
       '});',
       'const observable = from(promise);',
       'observable.subscribe(value => log(value));',
@@ -149,8 +149,8 @@ export const Demos: Demo[] = [
       'const observable = interval(1000);',
       'const subscription = observable.subscribe(value => log(value + 1));',
       'setTimeout(() => {',
-      getIdent(1) + 'subscription.unsubscribe();',
-      getIdent(1) + "log('Unsubscribed!');",
+      getIdentation(1) + 'subscription.unsubscribe();',
+      getIdentation(1) + "log('Unsubscribed!');",
       '}, 4000);',
     ],
     run: () => {
@@ -172,8 +172,8 @@ export const Demos: Demo[] = [
       'Cold Observables start generating values once subscription starts and always provide the full sequence of values. In this demo, since subscriptions start at different times, the subscribers receive different values.',
     code: [
       'const observable = new Observable(observer => {',
-      getIdent(1) + 'observer.next(Math.random());',
-      getIdent(1) + 'observer.next(Math.random());',
+      getIdentation(1) + 'observer.next(Math.random());',
+      getIdentation(1) + 'observer.next(Math.random());',
       '});',
       'observable.subscribe(value => log(`First Subscriber Value: ${value}`));',
       'observable.subscribe(value => log(`Second Subscriber Value: ${value}`));',
@@ -205,19 +205,19 @@ export const Demos: Demo[] = [
     code: [
       'let x = 1;',
       'const observable = new Observable((observer) => {',
-      getIdent(1) + 'observer.next(x);',
-      getIdent(1) + 'setTimeout(() => {',
-      getIdent(2) + 'x = x + 1;',
-      getIdent(2) + 'observer.next(x);',
-      getIdent(1) + '}, 2000);',
-      getIdent(1) + 'setTimeout(() => {',
-      getIdent(2) + 'x = x + 1;',
-      getIdent(2) + 'observer.next(x);',
-      getIdent(1) + '}, 3000);',
+      getIdentation(1) + 'observer.next(x);',
+      getIdentation(1) + 'setTimeout(() => {',
+      getIdentation(2) + 'x = x + 1;',
+      getIdentation(2) + 'observer.next(x);',
+      getIdentation(1) + '}, 2000);',
+      getIdentation(1) + 'setTimeout(() => {',
+      getIdentation(2) + 'x = x + 1;',
+      getIdentation(2) + 'observer.next(x);',
+      getIdentation(1) + '}, 3000);',
       '});',
       'observable.subscribe(value => log(`First Subscriber received: ${value}`));',
       'setTimeout(() => {',
-      getIdent(1) +
+      getIdentation(1) +
         'observable.subscribe(value => log(`Second Subscriber received: ${value}`));',
       '}, 2500);',
     ],
@@ -257,12 +257,12 @@ export const Demos: Demo[] = [
       'Operators are functions that allows us to create or modify data using Observables. Pipeable Operators can be piped to Observables, taking an Observable as input and creating a new one as output. One of the most used operators of this kind is Map, which allows the modification of emitted values. In this demo, Map is used to format the data before logging it.',
     code: [
       'const observable = new Observable(observer => {',
-      getIdent(1) + 'observer.next(Math.random());',
-      getIdent(1) + 'observer.next(Math.random());',
-      getIdent(1) + 'observer.next(Math.random());',
+      getIdentation(1) + 'observer.next(Math.random());',
+      getIdentation(1) + 'observer.next(Math.random());',
+      getIdentation(1) + 'observer.next(Math.random());',
       '});',
       'observable.pipe(',
-      getIdent(1) + 'map(data => (data as number).toFixed(2))',
+      getIdentation(1) + 'map(data => (data as number).toFixed(2))',
       ').subscribe(value => log(value));',
     ],
     run: () => {
@@ -284,13 +284,13 @@ export const Demos: Demo[] = [
       'The Tap operator allows the execution of pieces of code at specific points of the Observable, without causing side effects on the emitted values. Useful for debugging.',
     code: [
       'const observable = new Observable(observer => {',
-      getIdent(1) + 'observer.next(Math.random());',
+      getIdentation(1) + 'observer.next(Math.random());',
       '});',
       'observable.pipe(',
-      getIdent(1) +
+      getIdentation(1) +
         'tap(value => log(`This is the value before mapping: ${value}`)),',
-      getIdent(1) + 'map(value => (value as number) * 100),',
-      getIdent(1) +
+      getIdentation(1) + 'map(value => (value as number) * 100),',
+      getIdentation(1) +
         'tap(value => log(`This is the value after mapping: ${value}`)),',
       ').subscribe();',
     ],
@@ -319,14 +319,14 @@ export const Demos: Demo[] = [
       'The Filter operator receives a function and uses it to filter the data, emitting only the values that satisfy the specified condition.',
     code: [
       'const observable = new Observable(observer => {',
-      getIdent(1) + 'observer.next(1);',
-      getIdent(1) + 'observer.next(2);',
-      getIdent(1) + 'observer.next(3);',
-      getIdent(1) + 'observer.next(4);',
-      getIdent(1) + 'observer.next(5);',
+      getIdentation(1) + 'observer.next(1);',
+      getIdentation(1) + 'observer.next(2);',
+      getIdentation(1) + 'observer.next(3);',
+      getIdentation(1) + 'observer.next(4);',
+      getIdentation(1) + 'observer.next(5);',
       '});',
       'observable.pipe(',
-      getIdent(1) + 'filter(value => (value as number) % 2 !== 0)',
+      getIdentation(1) + 'filter(value => (value as number) % 2 !== 0)',
       ').subscribe(value => log(value));',
     ],
     run: () => {
@@ -350,17 +350,17 @@ export const Demos: Demo[] = [
       'Used to select only the first value emitted. If used with a predicate, emits the first value to pass predicate.',
     code: [
       'const observable = new Observable(observer => {',
-      getIdent(1) + 'observer.next(1);',
-      getIdent(1) + 'observer.next(2);',
-      getIdent(1) + 'observer.next(3);',
-      getIdent(1) + 'observer.next(4);',
-      getIdent(1) + 'observer.next(5);',
+      getIdentation(1) + 'observer.next(1);',
+      getIdentation(1) + 'observer.next(2);',
+      getIdentation(1) + 'observer.next(3);',
+      getIdentation(1) + 'observer.next(4);',
+      getIdentation(1) + 'observer.next(5);',
       '});',
       'observable.pipe(',
-      getIdent(1) + 'first()',
+      getIdentation(1) + 'first()',
       ').subscribe(value => log(`First Number: ${value}`));',
       'observable.pipe(',
-      getIdent(1) + 'first(value => (value as number) % 2 === 0)',
+      getIdentation(1) + 'first(value => (value as number) % 2 === 0)',
       ').subscribe(value => log(`First Even Number: ${value}`));',
     ],
     run: () => {
@@ -392,18 +392,18 @@ export const Demos: Demo[] = [
       'Counterpart to first. Used to select only the last value emitted, or the last value to pass predicate.',
     code: [
       'const observable = new Observable(observer => {',
-      getIdent(1) + 'observer.next(1);',
-      getIdent(1) + 'observer.next(2);',
-      getIdent(1) + 'observer.next(3);',
-      getIdent(1) + 'observer.next(4);',
-      getIdent(1) + 'observer.next(5);',
-      getIdent(1) + 'observer.complete();',
+      getIdentation(1) + 'observer.next(1);',
+      getIdentation(1) + 'observer.next(2);',
+      getIdentation(1) + 'observer.next(3);',
+      getIdentation(1) + 'observer.next(4);',
+      getIdentation(1) + 'observer.next(5);',
+      getIdentation(1) + 'observer.complete();',
       '});',
       'observable.pipe(',
-      getIdent(1) + 'last()',
+      getIdentation(1) + 'last()',
       ').subscribe(value => log(`Last Number: ${value}`));',
       'observable.pipe(',
-      getIdent(1) + 'last(value => (value as number) % 2 === 0)',
+      getIdentation(1) + 'last(value => (value as number) % 2 === 0)',
       ').subscribe(value => log(`Last Even Number: ${value}`));',
     ],
     run: () => {
