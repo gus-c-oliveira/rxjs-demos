@@ -7,7 +7,7 @@ import {
   of,
   Subscription,
 } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 export interface Demo {
   title: string;
@@ -268,6 +268,39 @@ export const Demos: Demo[] = [
         .pipe(map((data) => (data as number).toFixed(2)))
         .subscribe((value) => results.push(value));
       return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - Tap',
+    description:
+      'The Tap operator allows the execution of pieces of code at specific points of the Observable, without causing side effects on the emitted values. Useful for debugging.',
+    code: [
+      'const observable = new Observable(observer => {',
+      '\xa0\xa0\xa0\xa0observer.next(Math.random());',
+      '});',
+      'observable.pipe(',
+      '\xa0\xa0\xa0\xa0tap(value => log(`This is the value before mapping: ${value}`)),',
+      '\xa0\xa0\xa0\xa0map(value => (value as number) * 100),',
+      '\xa0\xa0\xa0\xa0tap(value => log(`This is the value after mapping: ${value}`)),',
+      ').subscribe();',
+    ],
+    run: () => {
+      const observable = new Observable((observer) => {
+        observer.next(Math.random());
+      });
+      const results = [];
+      const subscription = observable
+        .pipe(
+          tap((value) =>
+            results.push(`This is the value before mapping: ${value}`)
+          ),
+          map((value) => (value as number) * 100),
+          tap((value) =>
+            results.push(`This is the value after mapping: ${value}`)
+          )
+        )
+        .subscribe();
+      return { results, subscription };
     },
   },
 ];
