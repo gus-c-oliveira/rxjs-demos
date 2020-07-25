@@ -1,4 +1,5 @@
 import { fromEvent, Observable, from, timer, interval, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export const AppConstants = {
   AppTitle: 'RxJS Demos',
@@ -232,6 +233,33 @@ export const AppConstants = {
             )
           );
         }, 2500);
+        return { subscription, results };
+      },
+    },
+    {
+      title: 'Operators - Map',
+      description:
+        'Operators are functions that allows us to create or modify data using Observables. Pipeable Operators can be piped to Observables, taking an Observable as input and creating a new one as output. One of the most used operators of this kind is Map, which allows the modification of emitted values. In this demo, Map is used to format the data before logging it.',
+      code: [
+        'const observable = new Observable(observer => {',
+        '\xa0\xa0\xa0\xa0observer.next(Math.random());',
+        '\xa0\xa0\xa0\xa0observer.next(Math.random());',
+        '\xa0\xa0\xa0\xa0observer.next(Math.random());',
+        '});',
+        'observable.pipe(',
+        '\xa0\xa0\xa0\xa0map(data => (data as number).toFixed(2))',
+        ').subscribe(value => log(value));',
+      ],
+      run: () => {
+        const observable = new Observable((observer) => {
+          observer.next(Math.random());
+          observer.next(Math.random());
+          observer.next(Math.random());
+        });
+        const results = [];
+        const subscription = observable
+          .pipe(map((data) => (data as number).toFixed(2)))
+          .subscribe((value) => results.push(value));
         return { subscription, results };
       },
     },
