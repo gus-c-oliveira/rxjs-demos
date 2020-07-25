@@ -4,7 +4,7 @@ export const AppConstants = {
   AppTitle: 'RxJS Demos',
   Demos: [
     {
-      title: 'Create Manually',
+      title: 'Observables - Create Manually',
       description:
         'An Observable represents a source of data that emits values over time. When creating one manually, you can subscribe to it and use the .next() function to emit values.',
       code: [
@@ -25,7 +25,7 @@ export const AppConstants = {
       },
     },
     {
-      title: 'Create from DOM Event',
+      title: 'Observables - Create from DOM Event',
       description:
         'Observables can be created automatically from DOM events. In this demo, an Observable is created from mouse clicks. The click coordinates are displayed in the output.',
       code: [
@@ -46,7 +46,7 @@ export const AppConstants = {
       },
     },
     {
-      title: 'Create from Promise',
+      title: 'Observables - Create from Promise',
       description: 'A Promise can be converted to an Observable using from()',
       code: [
         'const promise = new Promise(resolve => {',
@@ -72,7 +72,7 @@ export const AppConstants = {
       },
     },
     {
-      title: 'Creating Timers using Observables',
+      title: 'Observables - Creating Timers',
       description:
         'Using timer() creates an Observable that completes when the timer runs out.',
       code: [
@@ -89,7 +89,7 @@ export const AppConstants = {
       },
     },
     {
-      title: 'Creating Values Every Interval',
+      title: 'Observables - Creating Values Every Interval',
       description:
         'interval(x) can be used to create an Observable that emits every x milliseconds.',
       code: [
@@ -106,7 +106,7 @@ export const AppConstants = {
       },
     },
     {
-      title: 'Creating From Static Values',
+      title: 'Observables - Creating From Static Values',
       description:
         "An Observable can be created from static values using of(). Values don't necessarily need to have the same type. The Observable completes after emitting its values.",
       code: [
@@ -127,15 +127,15 @@ export const AppConstants = {
       },
     },
     {
-      title: 'Unsubscribing',
+      title: 'Observables - Unsubscribing',
       description:
         "An Observable emits a complete notification when it's done emitting values. Some Observables complete automatically, others don't. Continuous streams, like interval, might cause memory leaks if they are allowed to run forever. To complete the emission, store the subscription in a variable and call .unsubscribe().",
       code: [
         'const observable = interval(1000);',
         'const subscription = observable.subscribe(value => log(value + 1));',
         'setTimeout(() => {',
-        '\xa0subscription.unsubscribe();',
-        "\xa0log('Unsubscribed!');",
+        '\xa0\xa0\xa0\xa0subscription.unsubscribe();',
+        "\xa0\xa0\xa0\xa0log('Unsubscribed!');",
         '}, 4000);',
       ],
       run: () => {
@@ -148,6 +148,90 @@ export const AppConstants = {
           subscription.unsubscribe();
           results.push('Unsubscribed!');
         }, 4000);
+        return { subscription, results };
+      },
+    },
+    {
+      title: 'Observables - Cold Observables',
+      description:
+        'Cold Observables start generating values once subscription starts and always provide the full sequence of values. In this demo, since subscriptions start at different times, the subscribers receive different values.',
+      code: [
+        'const observable = new Observable(observer => {',
+        '\xa0\xa0\xa0\xa0observer.next(Math.random());',
+        '\xa0\xa0\xa0\xa0observer.next(Math.random());',
+        '});',
+        'observable.subscribe(value => log(`First Subscriber Value: ${value}`));',
+        'observable.subscribe(value => log(`Second Subscriber Value: ${value}`));',
+      ],
+      run: () => {
+        const observable = new Observable((observer) => {
+          observer.next(Math.random());
+          observer.next(Math.random());
+        });
+        const results = [];
+        const subscription = [];
+        subscription.push(
+          observable.subscribe((value) =>
+            results.push(`First Subscriber Value: ${value}`)
+          )
+        );
+        subscription.push(
+          observable.subscribe((value) =>
+            results.push(`Second Subscriber Value: ${value}`)
+          )
+        );
+        return { results, subscription };
+      },
+    },
+    {
+      title: 'Observables - Hot Observables',
+      description:
+        'Hot Observables get their values from external sources. When subscribing, the subscriber gets the most recent value and all future values.',
+      code: [
+        'let x = 1;',
+        'const observable = new Observable((observer) => {',
+        '\xa0\xa0\xa0\xa0observer.next(x);',
+        '\xa0\xa0\xa0\xa0setTimeout(() => {',
+        '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0x = x + 1;',
+        '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0observer.next(x);',
+        '\xa0\xa0\xa0\xa0}, 2000);',
+        '\xa0\xa0\xa0\xa0setTimeout(() => {',
+        '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0x = x + 1;',
+        '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0observer.next(x);',
+        '\xa0\xa0\xa0\xa0}, 3000);',
+        '});',
+        'observable.subscribe(value => log(`First Subscriber received: ${value}`));',
+        'setTimeout(() => {',
+        '\xa0\xa0\xa0\xa0observable.subscribe(value => log(`Second Subscriber received: ${value}`));',
+        '}, 2500);',
+      ],
+      run: () => {
+        let x = 1;
+        const observable = new Observable((observer) => {
+          observer.next(x);
+          setTimeout(() => {
+            x = x + 1;
+            observer.next(x);
+          }, 2000);
+          setTimeout(() => {
+            x = x + 1;
+            observer.next(x);
+          }, 3000);
+        });
+        const subscription = [];
+        const results = [];
+        subscription.push(
+          observable.subscribe((value) =>
+            results.push(`First Subscriber received: ${value}`)
+          )
+        );
+        setTimeout(() => {
+          subscription.push(
+            observable.subscribe((value) =>
+              results.push(`Second Subscriber received: ${value}`)
+            )
+          );
+        }, 2500);
         return { subscription, results };
       },
     },
