@@ -15,6 +15,7 @@ import {
   map,
   tap,
   throttleTime,
+  scan,
 } from 'rxjs/operators';
 
 export interface Demo {
@@ -485,6 +486,30 @@ export const Demos: Demo[] = [
             `x: ${(value as MouseEvent).x}, y: ${(value as MouseEvent).y}`
           );
         });
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - Scan',
+    description: 'Similar to Array.reduce, it accumulates the emitted values.',
+    code: [
+      "const observable = fromEvent(document, 'mousemove');",
+      'observable.pipe(',
+      getIdentation(1) + 'throttleTime(100),',
+      getIdentation(1) + 'map(event => 1),',
+      getIdentation(1) + 'scan((total, current) => total + current),',
+      ').subscribe(value => log(`Total: ${value}`));',
+    ],
+    run: () => {
+      const observable = fromEvent(document, 'mousemove');
+      const results = [];
+      const subscription = observable
+        .pipe(
+          throttleTime(100),
+          map((event) => 1),
+          scan((total, current) => total + current)
+        )
+        .subscribe((value) => results.push(`Total: ${value}`));
       return { subscription, results };
     },
   },
