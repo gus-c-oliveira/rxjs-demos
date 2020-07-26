@@ -7,6 +7,7 @@ import {
   Subscription,
   timer,
   zip,
+  forkJoin,
 } from 'rxjs';
 import {
   concatMap,
@@ -681,6 +682,25 @@ export const Demos: Demo[] = [
       const a = from([1, 2, 3]);
       const b = from([4, 5, 6]);
       const combined = zip(a, b);
+      const results = [];
+      const subscription = combined.subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - ForkJoin',
+    description:
+      'Similar to Zip, but waits for all Observables to complete and emits only the last values.',
+    code: [
+      'const a = from([1, 2, 3]);',
+      'const b = from([4, 5, 6]);',
+      'const combined = forkJoin([a, b]);',
+      'combined.subscribe(value => log(value));',
+    ],
+    run: () => {
+      const a = from([1, 2, 3]);
+      const b = from([4, 5, 6]);
+      const combined = forkJoin([a, b]);
       const results = [];
       const subscription = combined.subscribe((value) => results.push(value));
       return { subscription, results };
