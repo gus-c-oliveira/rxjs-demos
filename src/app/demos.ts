@@ -8,19 +8,20 @@ import {
   timer,
 } from 'rxjs';
 import {
+  concatMap,
   debounceTime,
+  delay,
   filter,
   first,
   last,
   map,
-  tap,
-  throttleTime,
+  mergeMap,
   scan,
   switchMap,
-  mergeMap,
-  delay,
-  concatMap,
   takeUntil,
+  takeWhile,
+  tap,
+  throttleTime,
 } from 'rxjs/operators';
 
 export interface Demo {
@@ -610,6 +611,25 @@ export const Demos: Demo[] = [
       const results = [];
       const subscription = observable
         .pipe(takeUntil(notifier))
+        .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - TakeWhile',
+    description:
+      'Allows emission of values until the provided condition evaluates to false.',
+    code: [
+      'const observable = from([1, 2, 3, 4, 5]);',
+      'observable.pipe(',
+      getIdentation() + 'takeWhile(value => value <= 3)',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = from([1, 2, 3, 4, 5]);
+      const results = [];
+      const subscription = observable
+        .pipe(takeWhile((value) => value <= 3))
         .subscribe((value) => results.push(value));
       return { subscription, results };
     },
