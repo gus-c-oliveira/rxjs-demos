@@ -17,6 +17,8 @@ import {
   throttleTime,
   scan,
   switchMap,
+  mergeMap,
+  delay,
 } from 'rxjs/operators';
 
 export interface Demo {
@@ -487,6 +489,24 @@ export const Demos: Demo[] = [
             `x: ${(value as MouseEvent).x}, y: ${(value as MouseEvent).y}`
           );
         });
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - Delay',
+    description: 'Delays emitted values by a given amount of time.',
+    code: [
+      'const observable = from([2, 3, 4]);',
+      'observable.pipe(',
+      getIdentation() + 'delay(3000),',
+      ').subscribe(value => `Delayed by 3 seconds: ${value}`);',
+    ],
+    run: () => {
+      const observable = from([2, 3, 4]);
+      const results = [];
+      const subscription = observable
+        .pipe(delay(3000))
+        .subscribe((value) => results.push(`Delayed by 3 seconds: ${value}`));
       return { subscription, results };
     },
   },
