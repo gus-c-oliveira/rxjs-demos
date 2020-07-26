@@ -8,14 +8,22 @@ import {
   timer,
 } from 'rxjs';
 import {
+  concatMap,
   debounceTime,
+  delay,
   filter,
   first,
   last,
   map,
+  mergeMap,
+  scan,
+  switchMap,
+  takeUntil,
+  takeWhile,
   tap,
   throttleTime,
-  scan,
+  bufferCount,
+  bufferTime,
 } from 'rxjs/operators';
 
 export interface Demo {
@@ -490,6 +498,24 @@ export const Demos: Demo[] = [
     },
   },
   {
+    title: 'Operators - Delay',
+    description: 'Delays emitted values by a given amount of time.',
+    code: [
+      'const observable = from([2, 3, 4]);',
+      'observable.pipe(',
+      getIdentation() + 'delay(3000),',
+      ').subscribe(value => `Delayed by 3 seconds: ${value}`);',
+    ],
+    run: () => {
+      const observable = from([2, 3, 4]);
+      const results = [];
+      const subscription = observable
+        .pipe(delay(3000))
+        .subscribe((value) => results.push(`Delayed by 3 seconds: ${value}`));
+      return { subscription, results };
+    },
+  },
+  {
     title: 'Operators - Scan',
     description: 'Similar to Array.reduce, it accumulates the emitted values.',
     code: [
@@ -510,6 +536,133 @@ export const Demos: Demo[] = [
           scan((total, current) => total + current)
         )
         .subscribe((value) => results.push(`Total: ${value}`));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - SwitchMap',
+    description:
+      'Commonly used to handle async operations, such as performing HTTP requests. It takes inputs from a source Observable (or inner Observable) and returns another Observable that emits values according to a provided function.',
+    code: [
+      'const observable = from([3, 5, 7]);',
+      'observable.pipe(',
+      getIdentation() + 'switchMap(x => from([2 * x, 4 * x, 6 * x]))',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = from([3, 5, 7]);
+      const results = [];
+      const subscription = observable
+        .pipe(switchMap((x) => from([2 * x, 4 * x, 6 * x])))
+        .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - MergeMap',
+    description:
+      'While SwitchMap allows only one active inner subscription, MergeMap allows multiple inner subscriptions. A common use case is handling requests that should not be cancelled, such as reading data.',
+    code: [
+      'const observable = from([2, 4, 6]);',
+      'observable.pipe(',
+      getIdentation() + 'mergeMap(x => of(x).pipe(delay(x * 1000)))',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = from([2, 4, 6]);
+      const results = [];
+      const subscription = observable
+        .pipe(mergeMap((x) => of(x).pipe(delay(x * 1000))))
+        .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - ConcatMap',
+    description:
+      'Similar to MergeMap, but while MergeMap subscribes immediatelly to inner Observables, ConcatMap only subscribes to the next Observable after the previous one completes. Useful for cases where the order of operations matter.',
+    code: [
+      'const observable = from([2, 4, 6]);',
+      'observable.pipe(',
+      getIdentation() + 'concatMap(x => of(x).pipe(delay(x * 1000)))',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = from([2, 4, 6]);
+      const results = [];
+      const subscription = observable
+        .pipe(concatMap((x) => of(x).pipe(delay(x * 1000))))
+        .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - TakeUntil',
+    description:
+      'Provides a way to manage subscriptions. It completes the Observable when a notifier Observable emits.',
+    code: [
+      'const observable = interval(1000);',
+      'const notifier = timer(5000);',
+      'observable.pipe(',
+      getIdentation() + 'takeUntil(notifier)',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = interval(1000);
+      const notifier = timer(5000);
+      const results = [];
+      const subscription = observable
+        .pipe(takeUntil(notifier))
+        .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - TakeWhile',
+    description:
+      'Allows emission of values until the provided condition evaluates to false.',
+    code: [
+      'const observable = from([1, 2, 3, 4, 5]);',
+      'observable.pipe(',
+      getIdentation() + 'takeWhile(value => value <= 3)',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = from([1, 2, 3, 4, 5]);
+      const results = [];
+      const subscription = observable
+        .pipe(takeWhile((value) => value <= 3))
+        .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - BufferCount and BufferTime',
+    description:
+      'Accumulates the emitted values and then emits values as an array.',
+    code: [
+      'const observable = interval(1000);',
+      'observable.pipe(',
+      getIdentation() + 'bufferCount(5)',
+      ').subscribe(value => log(value));',
+      'observable.pipe(',
+      getIdentation() + 'bufferTime(3000)',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = interval(1000);
+      const results = [];
+      const subscription = [];
+      subscription.push(
+        observable
+          .pipe(bufferCount(5))
+          .subscribe((value) => results.push(value))
+      );
+      subscription.push(
+        observable
+          .pipe(bufferTime(3000))
+          .subscribe((value) => results.push(value))
+      );
       return { subscription, results };
     },
   },
