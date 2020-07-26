@@ -16,6 +16,7 @@ import {
   tap,
   throttleTime,
   scan,
+  switchMap,
 } from 'rxjs/operators';
 
 export interface Demo {
@@ -510,6 +511,25 @@ export const Demos: Demo[] = [
           scan((total, current) => total + current)
         )
         .subscribe((value) => results.push(`Total: ${value}`));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - SwitchMap',
+    description:
+      'Commonly used to handle async operations, such as performing HTTP requests. It takes inputs from a source Observable (or inner Observable) and returns another Observable that emits values according to a provided function.',
+    code: [
+      'const observable = from([3, 5, 7]);',
+      'observable.pipe(',
+      getIdentation() + 'switchMap(x => from([2 * x, 4 * x, 6 * x]))',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = from([3, 5, 7]);
+      const results = [];
+      const subscription = observable
+        .pipe(switchMap((x) => from([2 * x, 4 * x, 6 * x])))
+        .subscribe((value) => results.push(value));
       return { subscription, results };
     },
   },
