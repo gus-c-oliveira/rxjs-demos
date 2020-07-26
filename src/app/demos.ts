@@ -438,7 +438,7 @@ export const Demos: Demo[] = [
     },
   },
   {
-    title: 'Operators - debounceTime',
+    title: 'Operators - DebounceTime',
     description:
       'Useful to handle streams that emit at a fast rate, such as an user typing into an input. It discards values that take less than the specified time between outputs, and emits the last value. In other words, it emits the last value that has persisted for, at least, the specified amount of time.',
     code: [
