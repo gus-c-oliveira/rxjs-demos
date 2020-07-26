@@ -553,4 +553,23 @@ export const Demos: Demo[] = [
       return { subscription, results };
     },
   },
+  {
+    title: 'Operators - MergeMap',
+    description:
+      'While SwitchMap allows only one active inner subscription, MergeMap allows multiple inner subscriptions. A common use case is handling requests that should not be cancelled, such as reading data.',
+    code: [
+      'const observable = from([2, 4, 6]);',
+      'observable.pipe(',
+      getIdentation() + 'mergeMap(x => of(x).pipe(delay(x * 1000)))',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = from([2, 4, 6]);
+      const results = [];
+      const subscription = observable
+        .pipe(mergeMap((x) => of(x).pipe(delay(x * 1000))))
+        .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
 ];
