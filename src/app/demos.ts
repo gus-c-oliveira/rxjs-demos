@@ -19,6 +19,7 @@ import {
   switchMap,
   mergeMap,
   delay,
+  concatMap,
 } from 'rxjs/operators';
 
 export interface Demo {
@@ -568,6 +569,25 @@ export const Demos: Demo[] = [
       const results = [];
       const subscription = observable
         .pipe(mergeMap((x) => of(x).pipe(delay(x * 1000))))
+        .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - ConcatMap',
+    description:
+      'Similar to MergeMap, but while MergeMap subscribes immediatelly to inner Observables, ConcatMap only subscribes to the next Observable after the previous one completes. Useful for cases where the order of operations matter.',
+    code: [
+      'const observable = from([2, 4, 6]);',
+      'observable.pipe(',
+      getIdentation() + 'concatMap(x => of(x).pipe(delay(x * 1000)))',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = from([2, 4, 6]);
+      const results = [];
+      const subscription = observable
+        .pipe(concatMap((x) => of(x).pipe(delay(x * 1000))))
         .subscribe((value) => results.push(value));
       return { subscription, results };
     },
