@@ -20,6 +20,7 @@ import {
   mergeMap,
   delay,
   concatMap,
+  takeUntil,
 } from 'rxjs/operators';
 
 export interface Demo {
@@ -588,6 +589,27 @@ export const Demos: Demo[] = [
       const results = [];
       const subscription = observable
         .pipe(concatMap((x) => of(x).pipe(delay(x * 1000))))
+        .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - TakeUntil',
+    description:
+      'Provides a way to manage subscriptions. It completes the Observable when a notifier Observable emits.',
+    code: [
+      'const observable = interval(1000);',
+      'const notifier = timer(5000);',
+      'observable.pipe(',
+      getIdentation() + 'takeUntil(notifier)',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = interval(1000);
+      const notifier = timer(5000);
+      const results = [];
+      const subscription = observable
+        .pipe(takeUntil(notifier))
         .subscribe((value) => results.push(value));
       return { subscription, results };
     },
