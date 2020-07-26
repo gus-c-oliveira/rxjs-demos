@@ -1,4 +1,5 @@
 import {
+  forkJoin,
   from,
   fromEvent,
   interval,
@@ -6,8 +7,11 @@ import {
   of,
   Subscription,
   timer,
+  zip,
 } from 'rxjs';
 import {
+  bufferCount,
+  bufferTime,
   concatMap,
   debounceTime,
   delay,
@@ -22,8 +26,7 @@ import {
   takeWhile,
   tap,
   throttleTime,
-  bufferCount,
-  bufferTime,
+  catchError,
 } from 'rxjs/operators';
 
 export interface Demo {
@@ -663,6 +666,73 @@ export const Demos: Demo[] = [
           .pipe(bufferTime(3000))
           .subscribe((value) => results.push(value))
       );
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - Zip',
+    description:
+      'Takes Observables that have an equal number of values and combines them into an array.',
+    code: [
+      'const a = from([1, 2, 3]);',
+      'const b = from([4, 5, 6]);',
+      'const combined = zip(a, b);',
+      'combined.subscribe(value => log(value));',
+    ],
+    run: () => {
+      const a = from([1, 2, 3]);
+      const b = from([4, 5, 6]);
+      const combined = zip(a, b);
+      const results = [];
+      const subscription = combined.subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - ForkJoin',
+    description:
+      'Similar to Zip, but waits for all Observables to complete and emits only the last values.',
+    code: [
+      'const a = from([1, 2, 3]);',
+      'const b = from([4, 5, 6]);',
+      'const combined = forkJoin([a, b]);',
+      'combined.subscribe(value => log(value));',
+    ],
+    run: () => {
+      const a = from([1, 2, 3]);
+      const b = from([4, 5, 6]);
+      const combined = forkJoin([a, b]);
+      const results = [];
+      const subscription = combined.subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - CatchError',
+    description:
+      'Handles errors in the Observable. Note: an Observable must be returned from the catchError function!',
+    code: [
+      'const observable = new Observable(observer => {',
+      getIdentation() + 'observer.next(1);',
+      getIdentation() + 'observer.next(2);',
+      getIdentation() + 'observer.next(3);',
+      getIdentation() + "throw new Error('Error!');",
+      '});',
+      'observable.pipe(',
+      getIdentation() + "catchError(error => from(['error caught!']))",
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = new Observable((observer) => {
+        observer.next(1);
+        observer.next(2);
+        observer.next(3);
+        throw new Error('Error!');
+      });
+      const results = [];
+      const subscription = observable
+        .pipe(catchError((error) => from(['error caught!'])))
+        .subscribe((value) => results.push(value));
       return { subscription, results };
     },
   },
