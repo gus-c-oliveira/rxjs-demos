@@ -22,6 +22,8 @@ import {
   takeWhile,
   tap,
   throttleTime,
+  bufferCount,
+  bufferTime,
 } from 'rxjs/operators';
 
 export interface Demo {
@@ -631,6 +633,36 @@ export const Demos: Demo[] = [
       const subscription = observable
         .pipe(takeWhile((value) => value <= 3))
         .subscribe((value) => results.push(value));
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - BufferCount and BufferTime',
+    description:
+      'Accumulates the emitted values and then emits values as an array.',
+    code: [
+      'const observable = interval(1000);',
+      'observable.pipe(',
+      getIdentation() + 'bufferCount(5)',
+      ').subscribe(value => log(value));',
+      'observable.pipe(',
+      getIdentation() + 'bufferTime(3000)',
+      ').subscribe(value => log(value));',
+    ],
+    run: () => {
+      const observable = interval(1000);
+      const results = [];
+      const subscription = [];
+      subscription.push(
+        observable
+          .pipe(bufferCount(5))
+          .subscribe((value) => results.push(value))
+      );
+      subscription.push(
+        observable
+          .pipe(bufferTime(3000))
+          .subscribe((value) => results.push(value))
+      );
       return { subscription, results };
     },
   },
