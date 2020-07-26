@@ -6,6 +6,7 @@ import {
   of,
   Subscription,
   timer,
+  zip,
 } from 'rxjs';
 import {
   concatMap,
@@ -663,6 +664,25 @@ export const Demos: Demo[] = [
           .pipe(bufferTime(3000))
           .subscribe((value) => results.push(value))
       );
+      return { subscription, results };
+    },
+  },
+  {
+    title: 'Operators - Zip',
+    description:
+      'Takes Observables that have an equal number of values and combines them into an array.',
+    code: [
+      'const a = from([1, 2, 3]);',
+      'const b = from([4, 5, 6]);',
+      'const combined = zip(a, b);',
+      'combined.subscribe(value => log(value));',
+    ],
+    run: () => {
+      const a = from([1, 2, 3]);
+      const b = from([4, 5, 6]);
+      const combined = zip(a, b);
+      const results = [];
+      const subscription = combined.subscribe((value) => results.push(value));
       return { subscription, results };
     },
   },
