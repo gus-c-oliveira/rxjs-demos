@@ -21,6 +21,9 @@
   @media only screen and (max-width: $responsive-breakpoint) {
     display: flex;
     flex-direction: column;
+
+    height: auto;
+    min-height: 100vh;
   }
 }
 
