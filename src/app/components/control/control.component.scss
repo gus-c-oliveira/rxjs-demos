@@ -14,6 +14,18 @@
   background-color: $base-background;
   border-radius: 100px;
   box-shadow: $component-shadow;
+
+  @media only screen and (max-width: $responsive-breakpoint-smaller) {
+    flex-direction: column;
+    width: 100%;
+    padding-top: 1.5rem;
+
+    font-size: 1.6rem;
+  }
+
+  @media only screen and (max-width: $responsive-breakpoint-smallest) {
+    border-radius: 3rem;
+  }
 }
 
 mat-form-field,
