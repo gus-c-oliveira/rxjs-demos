@@ -13,6 +13,10 @@
 
   border-radius: $card-border-radius;
   box-shadow: $component-shadow;
+
+  @media only screen and (max-width: $responsive-breakpoint) {
+    overflow-y: unset;
+  }
 }
 
 .title {
@@ -25,4 +29,8 @@ div {
   overflow-y: auto;
 
   font-size: $card-content-font-size;
+
+  @media only screen and (max-width: $responsive-breakpoint) {
+    overflow-y: unset;
+  }
 }

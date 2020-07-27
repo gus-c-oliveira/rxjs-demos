@@ -1,7 +1,9 @@
 @import 'colors';
 
-// RESPONSIVE BREAKPOINT
+// RESPONSIVE BREAKPOINTS
 $responsive-breakpoint: 50em; // 800px / 16px
+$responsive-breakpoint-smaller: 33.125em; // 530px / 16px
+$responsive-breakpoint-smallest: 28.125em; // 450px / 16px
 
 // CARD COMPONENTS
 $card-padding: 2rem;
