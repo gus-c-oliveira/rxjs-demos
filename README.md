@@ -2,6 +2,9 @@
 
 A collection of small demos applying RxJS (Reactive Extensions for JavaScript)
 
+In this demo:
+- Using RxJS operators to manage data from streams
+
 # Technologies
 
 - [Angular](https://angular.io/)
